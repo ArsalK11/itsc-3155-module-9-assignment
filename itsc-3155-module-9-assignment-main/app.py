@@ -1,0 +1,51 @@
+from flask import Flask, redirect, render_template, request
+
+from src.repositories.movie_repository import get_movie_repository
+
+app = Flask(__name__)
+
+movie_repository = get_movie_repository()
+
+movie_dict = {}
+
+@app.get('/')
+def index():
+    return render_template('index.html')
+
+
+@app.get('/movies')
+def list_all_movies():
+    # TODO: Feature 1
+    return render_template('list_all_movies.html', list_movies_active=True)
+
+
+@app.get('/movies/new')
+def create_movies_form():
+    return render_template('create_movies_form.html', create_rating_active=True)
+
+
+@app.post('/movies')
+def create_movie():
+    # TODO: Feature 2
+    # After creating the movie in the database, we redirect to the list all movies page
+    if request.method == 'POST':
+        try:
+            
+            title = request.form['title']
+            direc = request.form['director']
+            rate = request.form['rating']
+            key_list = movie_dict.keys()
+            movie_dict.update({title: [direc, rate] })
+        except:
+            output = 'Invalid input'
+        
+    return redirect('/movies', key_list = key_list, movie_dict = movie_dict)
+
+
+@app.get('/movies/search')
+def search_movies():
+    # TODO: Feature 3
+    return render_template('search_movies.html', search_active=True)
+
+if __name__ == "__main__":
+    app.run(debug=True)
