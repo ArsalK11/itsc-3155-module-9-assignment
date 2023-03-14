@@ -6,4 +6,21 @@
 <h1 class="mb-5">Search Movie Ratings</h1>
 <p class="mb-3">Search for a movie rating below</p>
 <!-- TODO: Feature 3 -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Search Movies</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Search Movies</h1>
+    <form>
+        <label for="search">Search:</label>
+        <input type="text" id="search" name="search">
+        <button type="button" onclick="searchMovies()">Search</button>
+    </form>
+    <div id="results"></div>
+    <script src="script.js"></script>
+</body>
+</html>
 {% endblock %}
