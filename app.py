@@ -40,7 +40,17 @@ def create_movie():
 @app.get('/movies/search')
 def search_movies():
     # TODO: Feature 3
-    return render_template('search_movies.html', search_active=True)
+    if request.method == 'POST':
+        try:
+            userResponse = (request.form.get('movie'))
+            if userResponse in key_list:
+                temp = movie_dict[userResponse]
+
+            else:
+                temp = str(userResponse) + ' is odd'
+        except Exception:
+            temp = 'Movie is not within the List'
+        return render_template('search_movies.html', temp2 = temp)
 
 if __name__ == "__main__":
     app.run(debug=True)
