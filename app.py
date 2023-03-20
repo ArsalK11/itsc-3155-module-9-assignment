@@ -1,21 +1,33 @@
-from flask import Flask, redirect, render_template
-
-from src.repositories.movie_repository import get_movie_repository
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-movie_repository = get_movie_repository()
+movies = []
 
-
-@app.get('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    if request.method == 'POST':
+        movie = request.form['movie']
+        rating = request.form['rating']
+        if not rating.isdigit() or int(rating) < 1 or int(rating) > 10:
+            message = 'Rating must be an integer between 1 and 10.'
+        else:
+            movie_rating = (movie, int(rating))
+            if movie_rating not in movies:
+                movies.append(movie_rating)
+                message = f'{movie} has been added to the list of movies with a rating of {rating}.'
+            else:
+                message = f'{movie} with a rating of {rating} is already in the list of movies.'
+        return render_template('index.html', movies=movies, message=message)
+    else:
+        return render_template('index.html', movies=movies)
 
-
-@app.get('/movies')
+@app.route('/movies')
 def list_all_movies():
-    # TODO: Feature 1
-    return render_template('list_all_movies.html', list_movies_active=True)
+    return render_template('list_all_movies.html', list_movies_active=True, movies=movies)
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 @app.get('/movies/new')
